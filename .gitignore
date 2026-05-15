@@ -1,8 +1,26 @@
 ```
+# Docker related
+.dockerenv
+Dockerfile.backup
+*.dockerignore
+
+# Temporary files
+*.tmp
+*.swp
+*.swo
+
+# Logs
+*.log
+
+# Environment files
+.env
+.env.local
+*.env.*
+
 # Dependencies
 node_modules/
-venv/
 .venv/
+venv/
 __pycache__/
 .mypy_cache/
 .pytest_cache/
@@ -27,17 +45,10 @@ build/
 .idea/
 *.swp
 *.swo
-*.tmp
 
 # System files
 .DS_Store
 Thumbs.db
-.env
-.env.local
-*.env.*
-
-# Logs
-*.log
 
 # Coverage
 coverage/
