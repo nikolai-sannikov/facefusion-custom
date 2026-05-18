@@ -15,19 +15,21 @@ services:
       - ./temp:/app/temp
       # Optional: mount input files directory
       - ./input:/app/input
+      # Cache model weights
+      - ./models:/root/.facefusion
     environment:
       - PYTHONUNBUFFERED=1
       - OMP_NUM_THREADS=1
-    # Uncomment below if you have NVIDIA GPU and want to use it
-    # deploy:
-    #   resources:
-    #     reservations:
-    #       devices:
-    #         - driver: nvidia
-    #           count: all
-    #           capabilities: [gpu]
-    # runtime: nvidia
+      # Force CUDA execution provider
+      - ONNXRUNTIME_EXECUTION_PROVIDERS=cuda
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    runtime: nvidia
     restart: unless-stopped
-    # Keep container running
     stdin_open: true
     tty: true

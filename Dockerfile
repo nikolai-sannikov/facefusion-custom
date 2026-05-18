@@ -1,4 +1,4 @@
-FROM python:3.12-slim
+FROM python:3.10-slim
 
 # Set environment variables
 ENV DEBIAN_FRONTEND=noninteractive
@@ -25,14 +25,15 @@ RUN apt-get update && apt-get install -y \
 # Copy requirements first for better caching
 COPY requirements.txt .
 
-# Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+# Install Python dependencies with CUDA support
+RUN pip install --no-cache-dir -r requirements.txt \
+    && pip install --no-cache-dir onnxruntime-gpu
 
 # Copy the rest of the application
 COPY . .
 
 # Create necessary directories
-RUN mkdir -p /app/outputs /app/temp
+RUN mkdir -p /app/outputs /app/temp /root/.facefusion
 
 # Expose Gradio default port
 EXPOSE 7860
