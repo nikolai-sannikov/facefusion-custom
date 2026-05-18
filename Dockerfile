@@ -1,4 +1,5 @@
-FROM python:3.10-slim
+# Use NVIDIA CUDA base image with cuDNN runtime for GPU support
+FROM nvidia/cuda:12.1.0-cudnn8-runtime-ubuntu22.04
 
 # Set environment variables
 ENV DEBIAN_FRONTEND=noninteractive
@@ -6,11 +7,11 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 ENV OMP_NUM_THREADS=1
 
-# Set working directory
-WORKDIR /app
-
-# Install system dependencies
+# Install Python and system dependencies
 RUN apt-get update && apt-get install -y \
+    python3.10 \
+    python3.10-dev \
+    python3-pip \
     ffmpeg \
     libgl1 \
     libglib2.0-0 \
@@ -20,12 +21,17 @@ RUN apt-get update && apt-get install -y \
     libgomp1 \
     git \
     curl \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && ln -s /usr/bin/python3.10 /usr/bin/python \
+    && ln -s /usr/bin/pip3 /usr/bin/pip
+
+# Set working directory
+WORKDIR /app
 
 # Copy requirements first for better caching
 COPY requirements.txt .
 
-# Install Python dependencies with CUDA support
+# Install Python dependencies (onnxruntime-gpu will use system CUDA libs)
 RUN pip install --no-cache-dir -r requirements.txt \
     && pip install --no-cache-dir onnxruntime-gpu
 
