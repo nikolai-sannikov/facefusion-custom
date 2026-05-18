@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  facefusion:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: facefusion
+    ports:
+      - "7860:7860"
+    volumes:
+      # Mount output directory for generated files
+      - ./outputs:/app/outputs
+      # Mount temp directory
+      - ./temp:/app/temp
+      # Optional: mount input files directory
+      - ./input:/app/input
+      # Cache model weights
+      - ./models:/root/.facefusion
+    environment:
+      - PYTHONUNBUFFERED=1
+      - OMP_NUM_THREADS=1
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
