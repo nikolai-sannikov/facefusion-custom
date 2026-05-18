@@ -31,8 +31,8 @@ WORKDIR /app
 COPY requirements.txt .
 
 # Install Python dependencies (onnxruntime-gpu will use system CUDA libs)
-RUN pip install --no-cache-dir -r requirements.txt \
-    && pip install --no-cache-dir onnxruntime-gpu
+RUN pip install --no-cache-dir --break-system-packages -r requirements.txt \
+    && pip install --no-cache-dir --break-system-packages onnxruntime-gpu
 
 # Copy the rest of the application
 COPY . .
