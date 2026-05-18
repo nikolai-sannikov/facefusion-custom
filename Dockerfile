@@ -1,5 +1,5 @@
 # Use NVIDIA CUDA base image with cuDNN runtime for GPU support
-FROM nvidia/cuda:12.1.0-cudnn8-runtime-ubuntu22.04
+FROM nvidia/cuda:12.8.2-devel-ubuntu24.04
 
 # Set environment variables
 ENV DEBIAN_FRONTEND=noninteractive
@@ -9,8 +9,8 @@ ENV OMP_NUM_THREADS=1
 
 # Install Python and system dependencies
 RUN apt-get update && apt-get install -y \
-    python3.10 \
-    python3.10-dev \
+    python3.12 \
+    python3.12-dev \
     python3-pip \
     ffmpeg \
     libgl1 \
@@ -22,8 +22,7 @@ RUN apt-get update && apt-get install -y \
     git \
     curl \
     && rm -rf /var/lib/apt/lists/* \
-    && ln -s /usr/bin/python3.10 /usr/bin/python \
-    && ln -s /usr/bin/pip3 /usr/bin/pip
+    && ln -s /usr/bin/python3.12 /usr/bin/python
 
 # Set working directory
 WORKDIR /app

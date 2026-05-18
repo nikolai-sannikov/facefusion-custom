@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
     container_name: facefusion
     ports:
-      - "7860:7860"
+      - "7005:7860"
     volumes:
       # Mount output directory for generated files
       - ./outputs:/app/outputs
@@ -28,5 +28,3 @@ services:
               count: all
               capabilities: [gpu]
     restart: unless-stopped
-    stdin_open: true
-    tty: true
